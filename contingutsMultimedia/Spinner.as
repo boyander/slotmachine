@@ -9,10 +9,6 @@ package contingutsMultimedia{
 	import flash.geom.Point;
 	import flash.events.Event;
 	import flash.filters.*;
-	import com.gskinner.motion.GTween;
-	import com.gskinner.motion.plugins.*;
-	import com.gskinner.motion.easing.*;
-
 
 	public class Spinner extends Sprite {
 
@@ -30,7 +26,6 @@ package contingutsMultimedia{
 		public var _spinnername:String;
 
 		public function Spinner(pos:Point,sizeX:Number,nameS:String,fruits:Number=3){
-			MotionBlurPlugin.install();
 			this.x = pos.x;
 			this.y = pos.y - fruits * (FRUIT_SPACING_HEIGHT+sizeX) + FRUIT_SPACING_HEIGHT +sizeX/2;
 			fruitsArray = new Array();
