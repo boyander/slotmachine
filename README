@@ -1,4 +1,5 @@
-/****************/
+/
+***************/
 /* SLOT MACHINE */
 /****************/
 
@@ -7,7 +8,7 @@ DESCRIPTION
 ===========
 
 Slot machine written in ActionScript 3 for Universitat Politécnica de Catalunya 
-in subject of Continguts Multimedia (December 2012).
+in subject of Continguts Multimedia (January 2013).
 
 - Nice fruit graphics
 - Motion blur movement
