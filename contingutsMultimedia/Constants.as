@@ -35,27 +35,27 @@ package contingutsMultimedia{
 		// Returns fruits scores, graphics and probabilities
 		public static function getFruits(){
 			var fruits:Array = [{
-					name: "Apple",
+					name: FRUIT_APPLE,
 					graphicsImplement:FRUIT_APPLE,
 					score: 200.0
 				},{
-					name: "Banana",
+					name: FRUIT_BANANA,
 					graphicsImplement:FRUIT_BANANA,
 					score: 100.0
 				},{
-					name: "Orange",
+					name: FRUIT_ORANGE,
 					graphicsImplement:FRUIT_ORANGE,
 					score: 50.0
 				},{
-					name: "Strawberry",
+					name: FRUIT_STRAWBERRY,
 					graphicsImplement:FRUIT_STRAWBERRY,
 					score: 25.0
 				},{
-					name: "Superfruit",
+					name: FRUIT_SUPERFRUIT,
 					graphicsImplement:FRUIT_SUPERFRUIT,
 					score: 25.0
 				},{
-					name: "Corn",
+					name: FRUIT_CORN,
 					graphicsImplement:FRUIT_CORN,
 					score: 25.0
 				}];

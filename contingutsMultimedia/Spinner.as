@@ -10,6 +10,7 @@ package contingutsMultimedia{
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.Event;
 
 	import contingutsMultimedia.Constants;
 	import contingutsMultimedia.Fruit;
@@ -32,6 +33,7 @@ package contingutsMultimedia{
 		public var _acceleration:Number;
 		public var _isSpinning:Boolean;
 		public var _spinnername:String;
+		public var winnerFruit:Fruit;
 
 		public function Spinner(pos:Point,sizeX:Number,nameS:String,fruits:Number=3){
 			this.x = pos.x;
@@ -45,6 +47,8 @@ package contingutsMultimedia{
 			_acceleration = ACCELERATION;
 			_isSpinning = true;
 			_spinnername = nameS;
+
+			winnerFruit = null;
 
 			// Mask
 			var mask:Sprite = new Sprite();
@@ -86,13 +90,23 @@ package contingutsMultimedia{
 					if(fruitClip.y - _sizeX <= ((2*(FRUIT_SPACING_HEIGHT+_sizeX)) - FRUIT_SPACING_HEIGHT - _sizeX/2 + 2) 
 						&& fruitClip.y - _sizeX >= ((2*(FRUIT_SPACING_HEIGHT+_sizeX)) - FRUIT_SPACING_HEIGHT - _sizeX/2 - 2)){
 						_speed = 0;
-						trace("[Spinner " + this._spinnername + "] -> " + fruitsArray[i].name);
+						//trace("[Spinner " + this._spinnername + "] -> " + fruitsArray[i].name);
+						winnerFruit = fruitsArray[i];
+						dispatchEvent(new Event("SpinnerStop"));
 						_isSpinning = true;
 					}
 				}
 
 				fruitClip.y = (fruitClip.y + _speed) % ((numfruits)*(FRUIT_SPACING_HEIGHT+_sizeX)+FRUIT_SPACING_HEIGHT);
 			}
+		}
+
+		public function reset(){
+			toggleSpin(true);
+		}
+
+		public function getWinner(){
+			return winnerFruit;
 		}
 
 		public function drawColumn(){

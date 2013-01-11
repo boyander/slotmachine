@@ -9,6 +9,7 @@ Description:
 package {
 
 	import flash.display.MovieClip;
+	import flash.utils.Timer;
 	import flash.display.Sprite;
 	import flash.display.Shape;
 	import contingutsMultimedia.Constants;
@@ -16,6 +17,7 @@ package {
 	import flash.geom.Point;
 	import flash.events.MouseEvent;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -24,13 +26,15 @@ package {
 
 		public static const FRUIT_SPACING_HEIGHT:Number = 20;
 		public static const FRUIT_SPACING_WIDTH:Number = 40;
-		public static const GAME_ROWS:Number = 3;
+		public static const GAME_SPINNERS:Number = 3;
 		public static var spinners:Array;
 		public static var stopButton:MovieClip;
 
 		// Scores
 		public var score:Number;
 		public var scoreText:TextField;
+
+		public var spinnerCount:Number;
 
 		public function Main() {
 
@@ -81,13 +85,16 @@ package {
 			var sandboxOffset = new Point((stage.stageWidth/2)-sandboxSizeX/2,(stage.stageHeight/2)-50);
 
 			spinners = new Array();
-			var _sizeX = (sandboxSizeX/GAME_ROWS) - FRUIT_SPACING_WIDTH;
+			var _sizeX = (sandboxSizeX/GAME_SPINNERS) - FRUIT_SPACING_WIDTH;
+
+			spinnerCount = 0;
 
 			// Draw Spinners
-			for(var i:uint = 0; i < GAME_ROWS; i++){
+			for(var i:uint = 0; i < GAME_SPINNERS; i++){
 				// Create Spinner
-				var _position = new Point(((sandboxSizeX/GAME_ROWS)*i + FRUIT_SPACING_WIDTH/2) + sandboxOffset.x,sandboxOffset.y);
+				var _position = new Point(((sandboxSizeX/GAME_SPINNERS)*i + FRUIT_SPACING_WIDTH/2) + sandboxOffset.x,sandboxOffset.y);
 				var spinner = new Spinner(_position, _sizeX, String(i));
+				spinner.addEventListener("SpinnerStop", processSpinners);
 				spinners.push(spinner);
 				this.addChild(spinner);
 			}
@@ -100,16 +107,59 @@ package {
 			this.addChild(line);
 		}
 
-		public function ugradeScore(s:Number){
+		public function processSpinners(e:Event){
+			if(spinnerCount == GAME_SPINNERS-1){
+				// Check price
+				var price:Boolean = true;
+				for(var i:uint = 0; i < GAME_SPINNERS; i++){
+					spinnerCount = 0;
+					trace(spinners[i].getWinner().name);
+					if(i > 0){
+						if (spinners[i-1].getWinner().name != spinners[i].getWinner().name){
+							price = false;
+						}
+					}
+				}
+
+				// Upgrade Score
+				if(price){
+					upgradeScore(spinners[0].getWinner().score);
+					trace("You win " + spinners[0].getWinner().score + "!");
+				}else{
+					trace("Oh sorry, better next time!");
+					upgradeScore(-5);
+				}
+
+				// Nextplay timer
+				var timer:Timer = new Timer(2000,1);
+				timer.addEventListener(TimerEvent.TIMER, function (e:TimerEvent){
+					trace("Go for next play!");
+					stopButton.addEventListener(MouseEvent.CLICK, stopSpinners);
+					for(var i:uint = 0; i < GAME_SPINNERS; i++){
+						spinners[i].reset();
+					}
+				});
+				timer.start();
+
+			}else{
+				spinnerCount++;
+			}
+		}
+
+		public function upgradeScore(s:Number){
 			score += s;
 			scoreText.text = "Score: " + String(score);
 		}
 
 		public function stopSpinners(e:Event){
-			trace("ToggleSpinn");
+			// Remove button listener
+			stopButton.removeEventListener(MouseEvent.CLICK, stopSpinners);
+
+			// Make spinners spin
 			for( var i:uint=0; i< spinners.length; i++){
 				spinners[i].toggleSpin(false);
 			}
+
 		}
 
 	}
