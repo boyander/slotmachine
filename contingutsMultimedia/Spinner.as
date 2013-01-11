@@ -1,3 +1,11 @@
+/*
+Project: SlotMachine 
+Authors: Marc Pomar
+Contact: boyander@gmail.com
+Description:
+	Generic class for spinner object
+*/
+
 package contingutsMultimedia{
 
 	import flash.display.MovieClip;

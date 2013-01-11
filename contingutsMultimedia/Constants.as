@@ -1,3 +1,12 @@
+/*
+Project: SlotMachine 
+Authors: Marc Pomar
+Contact: boyander@gmail.com
+Description:
+	Constants for gameplay
+*/
+
+
 package contingutsMultimedia{
 
 	import flash.display.MovieClip;

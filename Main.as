@@ -1,3 +1,11 @@
+/*
+Project: SlotMachine 
+Authors: Marc Pomar
+Contact: boyander@gmail.com
+Description:
+	Main game class
+*/
+
 package {
 
 	import flash.display.MovieClip;

@@ -1,3 +1,12 @@
+/*
+Project: SlotMachine 
+Authors: Marc Pomar
+Contact: boyander@gmail.com
+Description:
+	Fruit object with score and name
+*/
+
+
 package contingutsMultimedia{
 	import flash.display.MovieClip;
 	import flash.utils.getDefinitionByName;
