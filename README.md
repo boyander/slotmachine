@@ -1,7 +1,7 @@
 AS3 SLOT MACHINE
 ================
 
-<img src="https://raw.github.com/boyander/slotmachine/master/graphics/firstPlay.tiff"/>
+<img src="https://raw.github.com/boyander/slotmachine/master/graphics/firstPlay.png"/>
 
 DESCRIPTION
 -----------
