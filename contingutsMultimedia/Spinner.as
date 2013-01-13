@@ -31,6 +31,10 @@ package contingutsMultimedia{
 		public var numfruits:Number;
 		var blur:BlurFilter = new BlurFilter();
 		public var _acceleration:Number;
+		public var _pushAcceleration:Number;
+		public var _pushSpinning:Boolean;
+		public var _maxSpeed:Number;
+
 		public var _isSpinning:Boolean;
 		public var _spinnername:String;
 		public var winnerFruit:Fruit;
@@ -45,10 +49,13 @@ package contingutsMultimedia{
 			blur = new BlurFilter(0,0,1);
 			this.addEventListener(Event.ENTER_FRAME,frameUpdate);
 			_acceleration = ACCELERATION;
+			_pushAcceleration = ACCELERATION;
 			_isSpinning = true;
+			_pushSpinning = true;
 			_spinnername = nameS;
-
 			winnerFruit = null;
+
+			_maxSpeed = MAX_SPEED + Math.random()*15;
 
 			// Mask
 			var mask:Sprite = new Sprite();
@@ -64,29 +71,33 @@ package contingutsMultimedia{
 
 		public function toggleSpin(b:Boolean){
 			if(b){
-				_isSpinning = true;
-				_acceleration = ACCELERATION;
+				_pushSpinning= true;
+				_pushAcceleration = ACCELERATION;
 			}else{
-				_isSpinning = false;
-				_acceleration = -1 * ACCELERATION/3;
+				_pushSpinning = false;
+				_pushAcceleration = -1 * ACCELERATION/3;
 			}
 		}
 
 		public function frameUpdate(e:Event){
+			_isSpinning = _pushSpinning;
+			_acceleration = new Number(_pushAcceleration);
+
 			for(var i:uint=0; i < fruitsArray.length; i++){
 				var fruitClip:MovieClip = fruitsArray[i].graphic;
 
-				blur.blurY = 20*(_speed/MAX_SPEED);
+				blur.blurY = 20*(_speed/_maxSpeed);
 				fruitClip.filters = [blur];
 
 				_speed += _acceleration;
 
-				if(_speed > MAX_SPEED && _isSpinning){
-					_speed = MAX_SPEED;
+				if(_speed > _maxSpeed && _isSpinning){
+					_speed = _maxSpeed;
 				}
 
 				if(_speed < 5 && !_isSpinning){
 					_acceleration = 0;
+					_pushAcceleration = 0;
 					if(fruitClip.y - _sizeX <= ((2*(FRUIT_SPACING_HEIGHT+_sizeX)) - FRUIT_SPACING_HEIGHT - _sizeX/2 + 2) 
 						&& fruitClip.y - _sizeX >= ((2*(FRUIT_SPACING_HEIGHT+_sizeX)) - FRUIT_SPACING_HEIGHT - _sizeX/2 - 2)){
 						_speed = 0;
@@ -94,10 +105,23 @@ package contingutsMultimedia{
 						winnerFruit = fruitsArray[i];
 						dispatchEvent(new Event("SpinnerStop"));
 						_isSpinning = true;
+						_pushSpinning = true;
+						placeWellFruits();
+						return;
 					}
 				}
 
-				fruitClip.y = (fruitClip.y + _speed) % ((numfruits)*(FRUIT_SPACING_HEIGHT+_sizeX)+FRUIT_SPACING_HEIGHT);
+				fruitClip.y = (fruitClip.y + _speed) % ( (numfruits*(FRUIT_SPACING_HEIGHT+_sizeX)));
+			}
+		}
+
+		public function placeWellFruits(){
+			for(var i:uint=0; i < fruitsArray.length; i++){
+				var fruitClip:MovieClip = fruitsArray[i].graphic;
+				var idx = Math.floor(fruitClip.y / (FRUIT_SPACING_HEIGHT+_sizeX));
+				var _align = (_sizeX - fruitClip.height)/2;
+				fruitClip.y = (idx * (_sizeX + FRUIT_SPACING_HEIGHT)) + _align;
+				trace("Fruit " + idx + " name "+fruitsArray[i].name);
 			}
 		}
 
@@ -116,8 +140,8 @@ package contingutsMultimedia{
 				var fr:Fruit = new Fruit(fruits[fruitIndex],_sizeX);
 				
 				// Positioning
-				var _align = _sizeX - fr.graphic.height;
-				fr.graphic.y = (i * (_sizeX + FRUIT_SPACING_HEIGHT)) + _align;
+				var _align = (_sizeX - fr.graphic.height)/2;
+				fr.graphic.y = (i * (FRUIT_SPACING_HEIGHT + _sizeX)) + _align;
 				this.addChild(fr.graphic);
 				fruitsArray.push(fr);
 			}
