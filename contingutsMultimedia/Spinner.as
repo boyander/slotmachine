@@ -121,7 +121,7 @@ package contingutsMultimedia{
 				var idx = Math.floor(fruitClip.y / (FRUIT_SPACING_HEIGHT+_sizeX));
 				var _align = (_sizeX - fruitClip.height)/2;
 				fruitClip.y = (idx * (_sizeX + FRUIT_SPACING_HEIGHT)) + _align;
-				trace("Fruit " + idx + " name "+fruitsArray[i].name);
+				//trace("Fruit " + idx + " name "+fruitsArray[i].name);
 			}
 		}
 
